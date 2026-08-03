@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funngro Arcade — Play Games & Earn Real Rewards</title>
+  <meta name="description" content="Funngro Arcade: Earn cash rewards and XP by playing skill games, completing daily quests, and topping leaderboards.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Orbs -->
+  <div class="glow-orb glow-orb-green"></div>
+
+  <!-- Navigation Bar -->
+  <header class="header">
+    <div class="container nav-wrapper">
+      <a href="index.html">
+        <img src="assets/funngro-logo.svg" alt="Funngro Official Logo" class="brand-logo-img">
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <div class="nav-switcher">
+          <a href="index.html" class="switcher-item">
+            <span>✨</span> Teenlancers
+          </a>
+          <a href="company.html" class="switcher-item">
+            <span>💼</span> Companies
+          </a>
+          <a href="arcade.html" class="switcher-item active">
+            <span>🎮</span> Arcade
+          </a>
+          <a href="about.html" class="switcher-item">
+            <span>🦈</span> About Us
+          </a>
+          <a href="seo-audit.html" class="switcher-item">
+            <span>🔍</span> SEO Audit
+          </a>
+        </div>
+      </nav>
+
+      <div style="display: flex; gap: 14px;">
+        <button class="btn btn-primary" data-modal-target="#profileModal">Play Arcade</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="hero-chip">
+            <span>🎮</span> FUNNGRO ARCADE & REWARDS
+          </div>
+          <h1 class="hero-h1">
+            Play Skill Games, <span class="gradient-text-green">Earn Real Rewards</span>
+          </h1>
+          <p class="hero-desc">
+            Combine gaming with earning! Complete daily trivia, skill challenges, brand quizzes, and climb the weekly leaderboards to earn direct UPI cash rewards.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-modal-target="#profileModal" style="padding: 16px 36px; font-size: 1.05rem;">
+              🕹️ Launch Arcade App
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div class="interactive-card">
+            <h2 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; margin-bottom: 16px;">🏆 Weekly Leaderboard</h2>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); border: 1px solid var(--border-medium);">
+                <span>🥇 1. Ananya Verma</span>
+                <span style="color: var(--pastel-green); font-weight: 800;">₹5,000 Won</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <span>🥈 2. Aryan Raj</span>
+                <span style="color: var(--pastel-green); font-weight: 800;">₹3,000 Won</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <span>🥉 3. Devansh Gupta</span>
+                <span style="color: var(--pastel-green); font-weight: 800;">₹1,500 Won</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 Funngro Platform (Wishbanc Technologies Pvt Ltd). All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
