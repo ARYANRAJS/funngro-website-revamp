@@ -35,9 +35,15 @@
   <!-- Header Navigation -->
   <header class="header">
     <div class="container nav-wrapper">
-      <a href="index.html">
-        <img src="assets/funngro-logo.svg" alt="Funngro Official Logo" class="brand-logo-img">
-      </a>
+      <div class="nav-top">
+        <a href="index.html">
+          <img src="assets/funngro-logo.svg" alt="Funngro Official Logo" class="brand-logo-img">
+        </a>
+        <div class="nav-cta-group">
+          <button class="btn btn-glass btn-sm" data-modal-target="#profileModal">Log In</button>
+          <button class="btn btn-primary btn-sm" data-modal-target="#profileModal">Start Earning</button>
+        </div>
+      </div>
 
       <!-- Page Switcher Control -->
       <nav aria-label="Main Navigation">
@@ -59,11 +65,6 @@
           </a>
         </div>
       </nav>
-
-      <div style="display: flex; gap: 14px;">
-        <button class="btn btn-glass" data-modal-target="#profileModal">Log In</button>
-        <button class="btn btn-primary" data-modal-target="#profileModal">Start Earning</button>
-      </div>
     </div>
   </header>
 

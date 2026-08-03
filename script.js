@@ -18,21 +18,21 @@ function initPreloader() {
   const preloader = document.getElementById('page-preloader');
   if (!preloader) return;
 
-  // Fade out preloader smoothly after page assets load
-  window.addEventListener('load', () => {
+  function hideLoader() {
+    preloader.classList.add('fade-out');
     setTimeout(() => {
-      preloader.classList.add('fade-out');
-      setTimeout(() => preloader.remove(), 600);
-    }, 800);
-  });
+      if (preloader.parentNode) {
+        preloader.parentNode.removeChild(preloader);
+      }
+    }, 600);
+  }
 
-  // Fallback safety timeout in case load event already fired
-  setTimeout(() => {
-    if (preloader && !preloader.classList.contains('fade-out')) {
-      preloader.classList.add('fade-out');
-      setTimeout(() => preloader.remove(), 600);
-    }
-  }, 1800);
+  if (document.readyState === 'complete') {
+    setTimeout(hideLoader, 400);
+  } else {
+    window.addEventListener('load', () => setTimeout(hideLoader, 400));
+    setTimeout(hideLoader, 1000); // Safety fallback
+  }
 }
 
 // 2. Spotlight Mouse Tracking Effect for Cards (Emil Kowalski Motion Touch)
