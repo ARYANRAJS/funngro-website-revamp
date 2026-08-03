@@ -1,9 +1,10 @@
 // ==========================================================================
 // FUNNGRO INTERACTIVE PLATFORM SCRIPT & MOTION CONTROLLER
-// Built using Emil Kowalski Motion Principles & Impeccable Design Standards
+// Designed & Developed with Precision by Hariom Bhati
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  initPreloader();
   initSpotlightEffect();
   initTeenCalculator();
   initCompanyCalculator();
@@ -12,7 +13,29 @@ document.addEventListener('DOMContentLoaded', () => {
   initCategoryFilters();
 });
 
-// 1. Spotlight Mouse Tracking Effect for Cards (Emil Kowalski Motion Touch)
+// 1. Page Preloader Fade-out Controller
+function initPreloader() {
+  const preloader = document.getElementById('page-preloader');
+  if (!preloader) return;
+
+  // Fade out preloader smoothly after page assets load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      preloader.classList.add('fade-out');
+      setTimeout(() => preloader.remove(), 600);
+    }, 800);
+  });
+
+  // Fallback safety timeout in case load event already fired
+  setTimeout(() => {
+    if (preloader && !preloader.classList.contains('fade-out')) {
+      preloader.classList.add('fade-out');
+      setTimeout(() => preloader.remove(), 600);
+    }
+  }, 1800);
+}
+
+// 2. Spotlight Mouse Tracking Effect for Cards (Emil Kowalski Motion Touch)
 function initSpotlightEffect() {
   const cards = document.querySelectorAll('.spotlight-card, .interactive-card, .roadmap-card');
 
@@ -28,7 +51,7 @@ function initSpotlightEffect() {
   });
 }
 
-// 2. Teen Earning Calculator (Smooth Reactive State & Number Formatting)
+// 3. Teen Earning Calculator (Smooth Reactive State & Number Formatting)
 function initTeenCalculator() {
   const hoursSlider = document.getElementById('hoursSlider');
   const hoursVal = document.getElementById('hoursVal');
@@ -51,12 +74,9 @@ function initTeenCalculator() {
     const skill = skillSelect.value;
     const rate = hourlyRates[skill] || 280;
 
-    // Monthly income (4 weeks per month)
     const monthlyIncome = hours * rate * 4;
 
     if (hoursVal) hoursVal.textContent = `${hours} hrs / week`;
-    
-    // Smooth text update with currency format
     estimatedEarn.textContent = `₹${monthlyIncome.toLocaleString('en-IN')}`;
   }
 
@@ -65,7 +85,7 @@ function initTeenCalculator() {
   updateCalculation();
 }
 
-// 3. Company Cost Savings Estimator
+// 4. Company Cost Savings Estimator
 function initCompanyCalculator() {
   const projCountSlider = document.getElementById('projCountSlider');
   const projCountVal = document.getElementById('projCountVal');
@@ -98,7 +118,7 @@ function initCompanyCalculator() {
   updateSavings();
 }
 
-// 4. Category Filter Buttons Grid
+// 5. Category Filter Buttons Grid
 function initCategoryFilters() {
   const filterBtns = document.querySelectorAll('[data-filter]');
   const cards = document.querySelectorAll('.spotlight-card[data-category]');
@@ -131,7 +151,7 @@ function initCategoryFilters() {
   });
 }
 
-// 5. Smooth FAQ Accordion
+// 6. Smooth FAQ Accordion
 function initFaqAccordion() {
   const faqBoxes = document.querySelectorAll('.faq-box');
 
@@ -153,7 +173,7 @@ function initFaqAccordion() {
   });
 }
 
-// 6. Modal Dialog Controller
+// 7. Modal Dialog Controller
 function initModals() {
   const modalOverlays = document.querySelectorAll('.modal-overlay');
   const modalTriggers = document.querySelectorAll('[data-modal-target]');
@@ -201,14 +221,14 @@ function showNotificationToast(message) {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    background: #00E676;
-    color: #032010;
+    background: #5FDD96;
+    color: #050806;
     padding: 16px 28px;
     border-radius: 16px;
     font-weight: 800;
     font-size: 0.98rem;
-    box-shadow: 0 10px 40px rgba(0, 230, 118, 0.4);
-    z-index: 9999;
+    box-shadow: 0 10px 40px rgba(7, 171, 95, 0.4);
+    z-index: 999999;
     transform: translateY(20px);
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -216,7 +236,6 @@ function showNotificationToast(message) {
   toast.innerHTML = message;
   document.body.appendChild(toast);
 
-  // Trigger animation frame
   requestAnimationFrame(() => {
     toast.style.transform = 'translateY(0)';
     toast.style.opacity = '1';
