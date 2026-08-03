@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://funngro-website-revamp.vercel.app/sitemap.xml
