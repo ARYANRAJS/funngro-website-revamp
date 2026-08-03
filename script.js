@@ -1,6 +1,6 @@
 // ==========================================================================
 // FUNNGRO INTERACTIVE PLATFORM SCRIPT & MOTION CONTROLLER
-// Designed & Developed by Hariom Bhati
+// Built using Emil Kowalski Motion Principles & Impeccable Design Standards
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,11 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initCompanyCalculator();
   initFaqAccordion();
   initModals();
+  initCategoryFilters();
 });
 
-// 1. Spotlight Mouse Tracking Effect for Cards (Bespoke Human Touch)
+// 1. Spotlight Mouse Tracking Effect for Cards (Emil Kowalski Motion Touch)
 function initSpotlightEffect() {
-  const cards = document.querySelectorAll('.spotlight-card, .interactive-card');
+  const cards = document.querySelectorAll('.spotlight-card, .interactive-card, .roadmap-card');
 
   cards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
@@ -37,23 +38,23 @@ function initTeenCalculator() {
   if (!hoursSlider || !skillSelect || !estimatedEarn) return;
 
   const hourlyRates = {
-    webdev: 380,
-    content: 260,
-    design: 320,
-    social: 240,
-    video: 350,
-    research: 210
+    webdev: 420,
+    content: 280,
+    design: 350,
+    social: 260,
+    video: 380,
+    research: 220
   };
 
   function updateCalculation() {
     const hours = parseInt(hoursSlider.value);
     const skill = skillSelect.value;
-    const rate = hourlyRates[skill] || 260;
+    const rate = hourlyRates[skill] || 280;
 
     // Monthly income (4 weeks per month)
     const monthlyIncome = hours * rate * 4;
 
-    hoursVal.textContent = `${hours} hrs / week`;
+    if (hoursVal) hoursVal.textContent = `${hours} hrs / week`;
     
     // Smooth text update with currency format
     estimatedEarn.textContent = `₹${monthlyIncome.toLocaleString('en-IN')}`;
@@ -77,14 +78,14 @@ function initCompanyCalculator() {
   function updateSavings() {
     const count = parseInt(projCountSlider.value);
     
-    const agencyAvg = 36000;
-    const funngroAvg = 12000;
+    const agencyAvg = 38000;
+    const funngroAvg = 12500;
 
     const totalAgency = count * agencyAvg;
     const totalFunngro = count * funngroAvg;
     const savingsPercent = Math.round(((totalAgency - totalFunngro) / totalAgency) * 100);
 
-    projCountVal.textContent = `${count} Projects / Month`;
+    if (projCountVal) projCountVal.textContent = `${count} Projects / Month`;
     agencyCostEl.textContent = `₹${totalAgency.toLocaleString('en-IN')}`;
     funngroCostEl.textContent = `₹${totalFunngro.toLocaleString('en-IN')}`;
     
@@ -97,7 +98,40 @@ function initCompanyCalculator() {
   updateSavings();
 }
 
-// 4. Smooth FAQ Accordion
+// 4. Category Filter Buttons Grid
+function initCategoryFilters() {
+  const filterBtns = document.querySelectorAll('[data-filter]');
+  const cards = document.querySelectorAll('.spotlight-card[data-category]');
+
+  if (!filterBtns.length || !cards.length) return;
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-filter');
+
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      cards.forEach(card => {
+        const cardCat = card.getAttribute('data-category');
+        if (category === 'all' || cardCat === category) {
+          card.style.display = 'block';
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(10px)';
+          requestAnimationFrame(() => {
+            card.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          });
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+}
+
+// 5. Smooth FAQ Accordion
 function initFaqAccordion() {
   const faqBoxes = document.querySelectorAll('.faq-box');
 
@@ -119,7 +153,7 @@ function initFaqAccordion() {
   });
 }
 
-// 5. Modal Dialog Controller
+// 6. Modal Dialog Controller
 function initModals() {
   const modalOverlays = document.querySelectorAll('.modal-overlay');
   const modalTriggers = document.querySelectorAll('[data-modal-target]');
@@ -129,7 +163,7 @@ function initModals() {
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
       const targetId = trigger.getAttribute('data-modal-target');
-      const targetModal = document.querySelector(targetId) || document.getElementById('modalOverlay');
+      const targetModal = document.querySelector(targetId) || document.getElementById('profileModal');
       if (targetModal) {
         targetModal.classList.add('active');
       }
