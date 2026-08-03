@@ -1,10 +1,11 @@
 // ==========================================================================
-// FUNNGRO INTERACTIVE PLATFORM SCRIPT & MOTION CONTROLLER
+// FUNNGRO INTERACTIVE PLATFORM - GSAP & EMIL KOWALSKI MOTION SUITE
 // Designed & Developed with Precision by Hariom Bhati
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
   initPreloader();
+  initGsapAnimations();
   initSpotlightEffect();
   initTeenCalculator();
   initCompanyCalculator();
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCategoryFilters();
 });
 
-// 1. Page Preloader Fade-out Controller
+// 1. Page Preloader Controller
 function initPreloader() {
   const preloader = document.getElementById('page-preloader');
   if (!preloader) return;
@@ -31,11 +32,84 @@ function initPreloader() {
     setTimeout(hideLoader, 400);
   } else {
     window.addEventListener('load', () => setTimeout(hideLoader, 400));
-    setTimeout(hideLoader, 1000); // Safety fallback
+    setTimeout(hideLoader, 1000);
   }
 }
 
-// 2. Spotlight Mouse Tracking Effect for Cards (Emil Kowalski Motion Touch)
+// 2. GSAP Motion & ScrollTrigger Controller
+function initGsapAnimations() {
+  if (typeof gsap === 'undefined') return;
+
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  // Hero Section Stagger Entrance
+  gsap.from('.hero-chip, .hero-h1, .hero-desc, .hero-actions, .hero-metrics > div', {
+    opacity: 0,
+    y: 35,
+    duration: 0.85,
+    stagger: 0.1,
+    ease: 'power3.out',
+    delay: 0.1
+  });
+
+  // Hero Card Entrance
+  gsap.from('.hero-image-banner, .interactive-card', {
+    opacity: 0,
+    scale: 0.94,
+    y: 30,
+    duration: 0.95,
+    stagger: 0.18,
+    ease: 'power3.out',
+    delay: 0.3
+  });
+
+  // ScrollTrigger for Cards
+  if (typeof ScrollTrigger !== 'undefined') {
+    gsap.utils.toArray('.spotlight-card, .roadmap-card').forEach((card) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          toggleActions: 'play none none reverse'
+        },
+        opacity: 0,
+        y: 35,
+        duration: 0.7,
+        ease: 'power2.out'
+      });
+    });
+
+    // Parallax background glow orbs
+    gsap.to('.glow-orb-green', {
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1.5
+      },
+      y: 200,
+      x: 60
+    });
+  }
+
+  // Magnetic Hover Physics for Primary Buttons
+  const magneticBtns = document.querySelectorAll('.btn-primary, .btn-blue');
+  magneticBtns.forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      gsap.to(btn, { x: x * 0.22, y: y * 0.22, duration: 0.3, ease: 'power2.out' });
+    });
+    btn.addEventListener('mouseleave', () => {
+      gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+    });
+  });
+}
+
+// 3. Spotlight Mouse Tracking Effect (Emil Kowalski Touch)
 function initSpotlightEffect() {
   const cards = document.querySelectorAll('.spotlight-card, .interactive-card, .roadmap-card');
 
@@ -51,7 +125,8 @@ function initSpotlightEffect() {
   });
 }
 
-// 3. Teen Earning Calculator (Smooth Reactive State & Number Formatting)
+// 4. Teen Earning Calculator (with GSAP Reactive Count-up)
+let earnState = { val: 0 };
 function initTeenCalculator() {
   const hoursSlider = document.getElementById('hoursSlider');
   const hoursVal = document.getElementById('hoursVal');
@@ -73,11 +148,22 @@ function initTeenCalculator() {
     const hours = parseInt(hoursSlider.value);
     const skill = skillSelect.value;
     const rate = hourlyRates[skill] || 280;
-
-    const monthlyIncome = hours * rate * 4;
+    const targetIncome = hours * rate * 4;
 
     if (hoursVal) hoursVal.textContent = `${hours} hrs / week`;
-    estimatedEarn.textContent = `₹${monthlyIncome.toLocaleString('en-IN')}`;
+
+    if (typeof gsap !== 'undefined') {
+      gsap.to(earnState, {
+        val: targetIncome,
+        duration: 0.45,
+        ease: 'power2.out',
+        onUpdate: () => {
+          estimatedEarn.textContent = `₹${Math.round(earnState.val).toLocaleString('en-IN')}`;
+        }
+      });
+    } else {
+      estimatedEarn.textContent = `₹${targetIncome.toLocaleString('en-IN')}`;
+    }
   }
 
   hoursSlider.addEventListener('input', updateCalculation);
@@ -85,7 +171,8 @@ function initTeenCalculator() {
   updateCalculation();
 }
 
-// 4. Company Cost Savings Estimator
+// 5. Company Cost Savings Estimator (with GSAP Count-up)
+let savingsState = { agency: 0, funngro: 0 };
 function initCompanyCalculator() {
   const projCountSlider = document.getElementById('projCountSlider');
   const projCountVal = document.getElementById('projCountVal');
@@ -97,18 +184,31 @@ function initCompanyCalculator() {
 
   function updateSavings() {
     const count = parseInt(projCountSlider.value);
-    
     const agencyAvg = 38000;
     const funngroAvg = 12500;
 
-    const totalAgency = count * agencyAvg;
-    const totalFunngro = count * funngroAvg;
-    const savingsPercent = Math.round(((totalAgency - totalFunngro) / totalAgency) * 100);
+    const targetAgency = count * agencyAvg;
+    const targetFunngro = count * funngroAvg;
+    const savingsPercent = Math.round(((targetAgency - targetFunngro) / targetAgency) * 100);
 
     if (projCountVal) projCountVal.textContent = `${count} Projects / Month`;
-    agencyCostEl.textContent = `₹${totalAgency.toLocaleString('en-IN')}`;
-    funngroCostEl.textContent = `₹${totalFunngro.toLocaleString('en-IN')}`;
-    
+
+    if (typeof gsap !== 'undefined') {
+      gsap.to(savingsState, {
+        agency: targetAgency,
+        funngro: targetFunngro,
+        duration: 0.45,
+        ease: 'power2.out',
+        onUpdate: () => {
+          agencyCostEl.textContent = `₹${Math.round(savingsState.agency).toLocaleString('en-IN')}`;
+          funngroCostEl.textContent = `₹${Math.round(savingsState.funngro).toLocaleString('en-IN')}`;
+        }
+      });
+    } else {
+      agencyCostEl.textContent = `₹${targetAgency.toLocaleString('en-IN')}`;
+      funngroCostEl.textContent = `₹${targetFunngro.toLocaleString('en-IN')}`;
+    }
+
     if (savingsPercentEl) {
       savingsPercentEl.textContent = `Save ${savingsPercent}% on Budget`;
     }
@@ -118,7 +218,7 @@ function initCompanyCalculator() {
   updateSavings();
 }
 
-// 5. Category Filter Buttons Grid
+// 6. Category Filter Grid
 function initCategoryFilters() {
   const filterBtns = document.querySelectorAll('[data-filter]');
   const cards = document.querySelectorAll('.spotlight-card[data-category]');
@@ -136,13 +236,9 @@ function initCategoryFilters() {
         const cardCat = card.getAttribute('data-category');
         if (category === 'all' || cardCat === category) {
           card.style.display = 'block';
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(10px)';
-          requestAnimationFrame(() => {
-            card.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          });
+          if (typeof gsap !== 'undefined') {
+            gsap.fromTo(card, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
+          }
         } else {
           card.style.display = 'none';
         }
@@ -151,7 +247,7 @@ function initCategoryFilters() {
   });
 }
 
-// 6. Smooth FAQ Accordion
+// 7. Smooth FAQ Accordion
 function initFaqAccordion() {
   const faqBoxes = document.querySelectorAll('.faq-box');
 
@@ -161,19 +257,21 @@ function initFaqAccordion() {
       header.addEventListener('click', () => {
         const isOpen = box.classList.contains('open');
 
-        // Close all other boxes
         faqBoxes.forEach(b => b.classList.remove('open'));
 
-        // Toggle current box
         if (!isOpen) {
           box.classList.add('open');
+          const body = box.querySelector('.faq-box-body');
+          if (typeof gsap !== 'undefined' && body) {
+            gsap.fromTo(body, { opacity: 0, y: -5 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
+          }
         }
       });
     }
   });
 }
 
-// 7. Modal Dialog Controller
+// 8. Modal Dialog Controller
 function initModals() {
   const modalOverlays = document.querySelectorAll('.modal-overlay');
   const modalTriggers = document.querySelectorAll('[data-modal-target]');
@@ -186,6 +284,10 @@ function initModals() {
       const targetModal = document.querySelector(targetId) || document.getElementById('profileModal');
       if (targetModal) {
         targetModal.classList.add('active');
+        const card = targetModal.querySelector('.modal-card');
+        if (typeof gsap !== 'undefined' && card) {
+          gsap.fromTo(card, { scale: 0.88, opacity: 0, y: 20 }, { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' });
+        }
       }
     });
   });
@@ -205,7 +307,7 @@ function initModals() {
   });
 }
 
-// Global Form Submit Handler with Custom Notification Toast
+// Global Form Submit Handler with Toast Notification
 function handleFormSubmit(event) {
   event.preventDefault();
   const modalOverlays = document.querySelectorAll('.modal-overlay');
@@ -231,19 +333,18 @@ function showNotificationToast(message) {
     z-index: 999999;
     transform: translateY(20px);
     opacity: 0;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   `;
   toast.innerHTML = message;
   document.body.appendChild(toast);
 
-  requestAnimationFrame(() => {
+  if (typeof gsap !== 'undefined') {
+    gsap.to(toast, { y: 0, opacity: 1, duration: 0.4, ease: 'back.out(1.5)' });
+    setTimeout(() => {
+      gsap.to(toast, { y: 20, opacity: 0, duration: 0.3, onComplete: () => toast.remove() });
+    }, 3500);
+  } else {
     toast.style.transform = 'translateY(0)';
     toast.style.opacity = '1';
-  });
-
-  setTimeout(() => {
-    toast.style.transform = 'translateY(20px)';
-    toast.style.opacity = '0';
-    setTimeout(() => toast.remove(), 400);
-  }, 3500);
+    setTimeout(() => toast.remove(), 3500);
+  }
 }
