@@ -21,7 +21,7 @@
   --bg-surface: #0E1712;
   --bg-surface-elevated: #15241C;
   --bg-surface-hover: #1C3025;
-  --bg-glass: rgba(11, 20, 15, 0.92);
+  --bg-glass: rgba(11, 20, 15, 0.94);
 
   /* Border Tokens */
   --border-subtle: rgba(255, 255, 255, 0.08);
@@ -96,7 +96,7 @@ body {
   background-attachment: fixed;
 }
 
-/* Custom Preloader Overlay */
+/* Preloader Overlay */
 #page-preloader {
   position: fixed;
   top: 0;
@@ -228,9 +228,9 @@ body {
 .nav-switcher {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   background: rgba(255, 255, 255, 0.04);
-  padding: 4px;
+  padding: 6px 12px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-medium);
   overflow-x: auto;
@@ -246,7 +246,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
+  padding: 8px 18px;
   font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-secondary);
@@ -782,11 +782,19 @@ body {
   .nav-wrapper {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    gap: 10px;
   }
   .nav-top {
     justify-content: space-between;
     width: 100%;
+  }
+  .nav-switcher {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    padding: 6px 8px;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-medium);
   }
   .hero-grid {
     grid-template-columns: 1fr;
@@ -807,9 +815,9 @@ body {
   .brand-logo-img {
     height: 32px;
   }
-  .nav-switcher {
-    width: 100%;
-    justify-content: flex-start;
+  .switcher-item {
+    padding: 8px 14px;
+    font-size: 0.84rem;
   }
   .hero {
     padding: 32px 0 20px;
